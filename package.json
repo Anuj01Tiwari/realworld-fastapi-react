@@ -1,0 +1,26 @@
+{
+  "name": "realworld",
+  "version": "1.0.0",
+  "description": "<br/><br/>",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/realworld-apps/realworld.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/realworld-apps/realworld/issues"
+  },
+  "homepage": "https://github.com/realworld-apps/realworld#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.63.0"
+  }
+}

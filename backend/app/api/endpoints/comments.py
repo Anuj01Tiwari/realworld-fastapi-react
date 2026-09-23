@@ -14,6 +14,8 @@ from app.schemas.comment import (
 from app.schemas.profile import ProfileData
 from app.api.deps import get_current_user_optional, get_current_user_required
 
+from app.api.endpoints.notifications import create_and_send_notification
+
 router = APIRouter()
 
 def make_comment_data(comment: Comment, current_user: Optional[User]) -> CommentData:
@@ -76,6 +78,14 @@ def create_comment(
     db.add(comment)
     db.commit()
     db.refresh(comment)
+
+    create_and_send_notification(
+        db,
+        recipient_id=article.author_id,
+        actor_id=current_user.id,
+        type="comment",
+        article_id=article.id
+    )
 
     return SingleCommentResponse(comment=make_comment_data(comment, current_user))
 

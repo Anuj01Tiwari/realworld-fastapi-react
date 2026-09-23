@@ -2,6 +2,7 @@ from app.models.user import User, followers_association, favorites_association
 from app.models.tag import Tag, article_tags_association
 from app.models.article import Article
 from app.models.comment import Comment
+from app.models.notification import Notification, NotificationType
 
 __all__ = [
     "User",
@@ -11,4 +12,6 @@ __all__ = [
     "article_tags_association",
     "Article",
     "Comment",
+    "Notification",
+    "NotificationType",
 ]

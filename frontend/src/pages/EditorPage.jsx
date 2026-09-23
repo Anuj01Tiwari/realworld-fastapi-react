@@ -127,13 +127,15 @@ export const EditorPage = () => {
             onKeyDown={handleAddTag}
           />
           <div className="tag-list flex flex-wrap gap-1">
-            {tagList.map((tag) => (
+            {tagList.map((tag, index) => (
               <span
-                key={tag}
-                className="tag-default tag-pill flex items-center gap-1 cursor-pointer"
-                onClick={() => handleRemoveTag(tag)}
+                key={`${tag}-${index}`}
+                className="tag-default tag-pill"
               >
-                <i className="ion-close-round text-xs"></i>
+                <i
+                  className="ion-close-round"
+                  onClick={() => handleRemoveTag(tag)}
+                ></i>
                 {tag}
               </span>
             ))}

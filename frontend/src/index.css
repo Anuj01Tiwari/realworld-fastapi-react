@@ -126,6 +126,30 @@ body {
   text-decoration: none;
 }
 
+.tag-default i,
+.tag-pill i,
+.mod-options i,
+.ion-trash-a,
+.ion-close-round {
+  cursor: pointer !important;
+  display: inline-block !important;
+  min-width: 12px !important;
+  min-height: 12px !important;
+  line-height: 1 !important;
+}
+
+.ion-close-round::before {
+  content: "×";
+  font-style: normal;
+  font-weight: bold;
+  margin-right: 3px;
+}
+
+.ion-trash-a::before {
+  content: "🗑";
+  font-style: normal;
+}
+
 .tag-outline {
   border: 1px solid #ddd;
   color: #aaa !important;

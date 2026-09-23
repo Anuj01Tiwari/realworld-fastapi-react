@@ -50,7 +50,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     )
 
 # Include routers
-from app.api.endpoints import users, profiles, articles, comments, favorites, tags
+from app.api.endpoints import users, profiles, articles, comments, favorites, tags, notifications
 
 app.include_router(users.router, prefix=settings.API_V1_STR)
 app.include_router(profiles.router, prefix=settings.API_V1_STR)
@@ -58,3 +58,5 @@ app.include_router(articles.router, prefix=settings.API_V1_STR)
 app.include_router(comments.router, prefix=settings.API_V1_STR)
 app.include_router(favorites.router, prefix=settings.API_V1_STR)
 app.include_router(tags.router, prefix=settings.API_V1_STR)
+app.include_router(notifications.router, prefix=settings.API_V1_STR)
+app.include_router(notifications.router)

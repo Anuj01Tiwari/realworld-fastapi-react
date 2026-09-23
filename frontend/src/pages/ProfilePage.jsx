@@ -77,7 +77,6 @@ export const ProfilePage = () => {
             src={profile?.image || '/default-avatar.svg'}
             alt={username}
             className="user-img mx-auto mb-4 rounded-full object-cover"
-            onError={(e) => { e.target.src = '/default-avatar.svg'; }}
           />
           <h4 className="text-2xl font-bold text-slate-800 mb-2">{username}</h4>
           <p className="text-slate-500 max-w-lg mx-auto mb-4">{profile?.bio}</p>
@@ -149,7 +148,6 @@ export const ProfilePage = () => {
                       src={art.author.image || '/default-avatar.svg'}
                       alt={art.author.username}
                       className="w-8 h-8 rounded-full object-cover"
-                      onError={(e) => { e.target.src = '/default-avatar.svg'; }}
                     />
                   </Link>
                   <div className="info text-sm">

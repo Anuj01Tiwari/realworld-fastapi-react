@@ -4,13 +4,19 @@ import { useAuth } from '../context/AuthContext';
 import api from '../api';
 
 export const HomePage = () => {
-  const { currentUser } = useAuth();
+  const { currentUser, authState } = useAuth();
   const [searchParams] = useSearchParams();
   const { tag: tagParam } = useParams();
   const navigate = useNavigate();
 
   const feedParam = searchParams.get('feed');
   const pageParam = parseInt(searchParams.get('page') || '1', 10);
+
+  useEffect(() => {
+    if (feedParam === 'following' && authState === 'unauthenticated' && !currentUser) {
+      navigate('/login', { replace: true });
+    }
+  }, [feedParam, authState, currentUser, navigate]);
 
   const [articles, setArticles] = useState([]);
   const [articlesCount, setArticlesCount] = useState(0);
@@ -24,7 +30,7 @@ export const HomePage = () => {
   let feedMode = 'global';
   if (tagParam) {
     feedMode = 'tag';
-  } else if (feedParam === 'following' && currentUser) {
+  } else if (feedParam === 'following') {
     feedMode = 'following';
   }
 
@@ -36,6 +42,8 @@ export const HomePage = () => {
   }, []);
 
   useEffect(() => {
+    if (authState === 'loading') return;
+
     setLoading(true);
     let endpoint = '/articles';
     const params = { limit, offset };
@@ -53,7 +61,7 @@ export const HomePage = () => {
       })
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
-  }, [feedMode, tagParam, pageParam, currentUser]);
+  }, [feedMode, tagParam, pageParam, authState, currentUser]);
 
   const handleFavorite = async (slug, currentlyFavorited) => {
     if (!currentUser) {
@@ -126,7 +134,13 @@ export const HomePage = () => {
               <div className="py-4">Loading articles...</div>
             ) : articles.length === 0 ? (
               <div className="empty-feed-message py-4 text-slate-500">
-                No articles here... yet.
+                {feedMode === 'following' || feedParam === 'following' ? (
+                  <>
+                    Your feed is empty. Check out the <Link to="/" className="text-emerald-600 hover:underline">Global Feed</Link> to find articles.
+                  </>
+                ) : (
+                  'No articles here... yet.'
+                )}
               </div>
             ) : (
               <>
@@ -139,7 +153,6 @@ export const HomePage = () => {
                             src={art.author.image || '/default-avatar.svg'}
                             alt={art.author.username}
                             className="w-8 h-8 rounded-full object-cover"
-                            onError={(e) => { e.target.src = '/default-avatar.svg'; }}
                           />
                         </Link>
                         <div className="info text-sm">

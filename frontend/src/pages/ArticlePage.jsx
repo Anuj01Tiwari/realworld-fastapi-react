@@ -127,7 +127,6 @@ export const ArticlePage = () => {
             src={article.author.image || '/default-avatar.svg'}
             alt={article.author.username}
             className="w-8 h-8 rounded-full object-cover"
-            onError={(e) => { e.target.src = '/default-avatar.svg'; }}
           />
         </Link>
         <div className="info text-sm">
@@ -234,7 +233,6 @@ export const ArticlePage = () => {
                     src={currentUser.image || '/default-avatar.svg'}
                     alt={currentUser.username}
                     className="comment-author-img w-6 h-6 rounded-full object-cover"
-                    onError={(e) => { e.target.src = '/default-avatar.svg'; }}
                   />
                   <button
                     type="submit"
@@ -265,7 +263,6 @@ export const ArticlePage = () => {
                         src={comment.author.image || '/default-avatar.svg'}
                         alt={comment.author.username}
                         className="comment-author-img w-5 h-5 rounded-full object-cover"
-                        onError={(e) => { e.target.src = '/default-avatar.svg'; }}
                       />
                     </Link>
                     <Link to={`/profile/${comment.author.username}`} className="author font-medium text-emerald-600">
@@ -275,11 +272,11 @@ export const ArticlePage = () => {
                       {new Date(comment.createdAt).toDateString()}
                     </span>
                   </div>
-                  {(currentUser?.username === comment.author.username || isAuthor) && (
+                  {currentUser?.username === comment.author.username && (
                     <span className="mod-options">
                       <i
                         onClick={() => handleDeleteComment(comment.id)}
-                        className="ion-trash-a text-slate-500 hover:text-rose-600 cursor-pointer text-base"
+                        className="ion-trash-a"
                       ></i>
                     </span>
                   )}

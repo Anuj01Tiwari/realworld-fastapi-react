@@ -5,7 +5,10 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
-  const [authState, setAuthState] = useState('loading');
+  const [authState, setAuthState] = useState(() => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('jwtToken') : null;
+    return token ? 'loading' : 'unauthenticated';
+  });
 
   useEffect(() => {
     const token = localStorage.getItem('jwtToken');

@@ -2,6 +2,8 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
+import NotificationBell from './NotificationBell';
+
 export const Navbar = () => {
   const { currentUser } = useAuth();
   const location = useLocation();
@@ -21,6 +23,9 @@ export const Navbar = () => {
         </li>
         {currentUser ? (
           <>
+            <li className="nav-item flex items-center">
+              <NotificationBell />
+            </li>
             <li className="nav-item">
               <Link className={`nav-link ${isActive('/editor') ? 'active font-semibold' : ''}`} to="/editor">
                 <i className="ion-compose mr-1"></i>New Article
@@ -40,7 +45,6 @@ export const Navbar = () => {
                   src={currentUser.image || '/default-avatar.svg'}
                   className="user-pic w-6 h-6 rounded-full object-cover"
                   alt={currentUser.username}
-                  onError={(e) => { e.target.src = '/default-avatar.svg'; }}
                 />
                 <span>{currentUser.username}</span>
               </Link>

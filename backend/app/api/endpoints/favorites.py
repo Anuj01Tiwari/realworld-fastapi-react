@@ -6,6 +6,7 @@ from app.models.article import Article
 from app.schemas.article import SingleArticleResponse
 from app.api.endpoints.articles import make_article_data
 from app.api.deps import get_current_user_required
+from app.api.endpoints.notifications import create_and_send_notification
 
 router = APIRouter()
 
@@ -26,6 +27,13 @@ def favorite_article(
         article.favorited_by.append(current_user)
         db.commit()
         db.refresh(article)
+        create_and_send_notification(
+            db,
+            recipient_id=article.author_id,
+            actor_id=current_user.id,
+            type="favorite",
+            article_id=article.id
+        )
 
     return SingleArticleResponse(article=make_article_data(article, current_user))
 

@@ -1,57 +1,89 @@
-<br/><br/>
+# Conduit — RealWorld Full-Stack Implementation
 
-![RealWorld Example Applications](assets/media/realworld-dual-mode.svg)
+A spec-compliant implementation of the [RealWorld](https://github.com/gothinkster/realworld) 
+(Conduit) application — a Medium.com-style blogging platform — built with **React**, 
+**FastAPI**, and **PostgreSQL**.
 
-<p align="center">
-  <img src="assets/media/frameworks.svg" alt="Frontend and Backend Frameworks" width="720"/>
-</p>
+This project follows the official RealWorld API specification and was verified against 
+the official Playwright end-to-end test suite, in addition to a custom backend test suite.
 
-<br/>
+## Live Demo
+> _Add your deployed link here once hosted (e.g. Vercel + Render)._
 
-### See how [_the exact same_ Medium.com clone](https://demo.realworld.show) is built using different [frontends](https://codebase.show/projects/realworld?category=frontend) and [backends](https://codebase.show/projects/realworld?category=backend)
+## Tech Stack
 
-You can combine any frontend with any backend, because **they all adhere to the same [API spec](specs/api/)**
+| Layer | Technology |
+|---|---|
+| Frontend | React (Vite), Tailwind CSS, React Router, Axios |
+| Backend | FastAPI (Python), SQLAlchemy ORM, Alembic migrations |
+| Database | PostgreSQL |
+| Auth | JWT (`Authorization: Token <jwt>`) |
+| Testing | Pytest (backend), Vitest (frontend), Playwright (e2e) |
+| Infra | Docker & Docker Compose |
 
-While most "todo" demos provide an excellent cursory glance at a framework's capabilities, they typically don't convey the knowledge required to actually build _real_ applications with it — nor the real-world constraints a minimal demo never has to face.
+## Features
 
-**RealWorld** solves this problem by providing the same demo app for each framework, at a sweet spot between simplicity and breadth.
+- User registration, login, and profile management (JWT-based auth)
+- Follow / unfollow other users
+- Create, edit, delete articles with tags
+- Comment on articles
+- Favorite / unfavorite articles
+- Global feed, personal feed (followed authors), and tag-based filtering
+- Pagination on article listings
 
-Join us on [GitHub Discussions!](https://github.com/realworld-apps/realworld/discussions) 🎉
+## Architecture & Key Decisions
 
-# Implementations
+- **FastAPI over Django/Flask**: async-first, automatic OpenAPI docs, and Pydantic-based 
+  validation reduce boilerplate for a spec-driven API like this one.
+- **PostgreSQL over MongoDB**: the data model is inherently relational (users ↔ articles 
+  ↔ comments ↔ tags ↔ follows), so a relational database with proper foreign-key 
+  constraints was a better fit than a document store.
+- **JWT auth**: stateless auth matching the RealWorld spec's expected 
+  `Authorization: Token <jwt>` header format.
 
-Over 100 implementations have been created using various languages, libraries, and frameworks.
+## Testing
 
-Explore them on [**CodebaseShow**](https://codebase.show/projects/realworld).
+- **Backend**: 14 automated Pytest test cases covering auth, articles, comments, 
+  favorites, profiles, and tags — **84% code coverage**.
+- **End-to-End**: Verified against the official RealWorld Playwright test suite — 
+  **73/74 applicable tests passing (~98.6%)**.
 
-## Spec-compliant backends
+## Getting Started
 
-These backends pass the full [API spec test suite](https://docs.realworld.show/specifications/backend/introduction/):
+### Prerequisites
+- Docker & Docker Compose
 
-- [**Nitro + Prisma + Zod**](https://github.com/realworld-apps/nitro-prisma-zod-realworld-example-app) — TypeScript
-- [**Django Ninja**](https://github.com/c4ffein/realworld-django-ninja) — Python
+### Run with Docker (recommended)
+```bash
+docker compose up --build
+```
+- Frontend: http://localhost:3000
+- Backend API: http://localhost:8000
+- API docs (Swagger): http://localhost:8000/docs
 
-# Create a new implementation
+### Run backend tests
+```bash
+cd backend
+pip install -r requirements.txt
+pytest --cov=app --cov-report=term
+```
 
-[**Create a new implementation >>>**](https://docs.realworld.show/implementation-creation/introduction/)
+### Run e2e tests
+```bash
+npm install
+npx playwright test
+```
 
-Or you can [view upcoming implementations (WIPs)](https://github.com/realworld-apps/realworld/discussions/categories/wip-implementations).
+## Project Structure
+```
+├── backend/          FastAPI application, models, tests
+├── frontend/          React application
+├── specs/             Official RealWorld API & e2e specs (reference, unmodified)
+├── docker-compose.yml
+└── playwright.config.ts
+```
 
-# Learn more
-
-- [Documentation introduction](https://docs.realworld.show/introduction/)
-- Every tutorial is built against the same [API spec](specs/api/) to ensure modularity of every frontend & backend
-- A shared [CSS theme](assets/theme/styles.css) is provided to build frontend implementations with identical UI/UX
-- A shared [E2E test suite](specs/e2e/) is available to validate frontend implementations
-- There is a hosted version of the backend API available for public usage at [api.realworld.show](https://api.realworld.show), no API keys required — demo accounts are provided, and real accounts can't see each other
-- There is an angular frontend plugged to this backend available at [demo.realworld.show](https://demo.realworld.show)
-- Interested in creating a new RealWorld stack? View our [starter guide & spec](https://docs.realworld.show/implementation-creation/introduction/)
-
-# Logo Attribution
-
-See [LICENSES_LOGOS.md](docs/non-included/LICENSES_LOGOS.md) for framework logo licensing and attribution details.
-
-# Active Maintainers
-
-- **[c4ffein](https://github.com/c4ffein) - Maintainer** - maintains the spec, the test suites and the [demo website](https://demo.realworld.show)
-- **[Manuel Vila](https://github.com/mvila) - Maintainer** - creator of the [Layr framework](https://layrjs.com) and the [CodebaseShow website](https://codebase.show/)
+## Acknowledgements
+Built against the [RealWorld](https://github.com/gothinkster/realworld) spec by 
+Thinkster — an open-source project for comparing full-stack implementations across 
+frameworks.
